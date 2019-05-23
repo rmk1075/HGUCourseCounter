@@ -1,7 +1,11 @@
 package edu.handong.analysis.utils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,13 +18,12 @@ public class Utils {
 		{
 			// Skip the header line by reading and ignoring it
 			Scanner inputStream = new Scanner(new File(file)); 
-			String line = inputStream.nextLine();
-			// Total sales
-			double total = 0;
+			String line;
+			
 			// Read the rest of the file line by line
 			while (inputStream.hasNextLine())
 			{
-				// Contains SKU,Quantity,Price,Description
+				// Contains ID, YearMonth, Major1, Major2, CourseCode, CourseName, CourseCredit, YearTaken, SemesterTaken
 				line = inputStream.nextLine();
 
 				csv.add(line);
@@ -32,15 +35,31 @@ public class Utils {
 		}
 		
 		if(removeHeader == true) {
-			for(int i = 0; i < 9; i++) {
-				csv.remove(0);
-			}
+			csv.remove(0);
 		}
 		
 		return csv;
 	}
 
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
+		ArrayList<String> csv = new ArrayList<String>();
 		
+		try 
+		{
+			ObjectOutputStream outputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetFileName))); 
+			
+			for(String line : lines) {
+				outputStream.writeObject(line);
+				outputStream.writeBytes("\n");
+			}
+			outputStream.close( );
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Cannot find file " + targetFileName);
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }

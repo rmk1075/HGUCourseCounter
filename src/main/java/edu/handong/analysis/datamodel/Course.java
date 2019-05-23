@@ -14,7 +14,21 @@ public class Course {
 	//getter and setter?
 	
 	public Course(String line) {
-		
+		this.studentId = line.split(",")[0].trim();
+		this.yearMonthGraduated = line.split(",")[1].trim();
+		this.firstMajor = line.split(",")[2].trim();
+		this.secondMajor = line.split(",")[3].trim();
+		this.courseCode = line.split(",")[4].trim();
+		this.courseName = line.split(",")[5].trim();
+		this.courseCredit = line.split(",")[6].trim();
+		this.yearTaken = Integer.parseInt(line.split(",")[7].trim());
+		this.semesterCourseTaken = Integer.parseInt(line.split(",")[8].trim());
 	}
-
+	
+	//getter for year and semester
+	public String TakenSemester() {
+		String takenSemester = yearTaken + "-" + semesterCourseTaken;
+		
+		return takenSemester;
+	}
 }

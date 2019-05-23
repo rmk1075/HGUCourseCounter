@@ -35,10 +35,10 @@ public class HGUCoursePatternAnalyzer {
 		ArrayList<String> lines = Utils.getLines(dataPath, true);
 		
 		students = loadStudentCourseRecords(lines);
-		
+				
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
-		
+				
 		// Generate result lines to be saved.
 		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
 		
@@ -53,10 +53,29 @@ public class HGUCoursePatternAnalyzer {
 	 * @return
 	 */
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines) {
-		
+				
 		// TODO: Implement this method
+		HashMap<String, Student> Students = new HashMap<String, Student>();
 		
-		return null; // do not forget to return a proper variable.
+		for(String line : lines) {
+			String ID = line.split(",")[0].trim();
+			
+			Course newCourse = new Course(line);
+						
+			if(Students.containsKey(ID)) {
+				Student newStudent = Students.get(ID);
+				newStudent.addCourse(newCourse);
+				
+				Students.replace(ID, newStudent);
+			} else {
+				Student newStudent = new Student(ID);
+				newStudent.addCourse(newCourse);
+				
+				Students.put(ID, newStudent);
+			}
+		}
+		
+		return Students; // do not forget to return a proper variable.
 	}
 
 	/**
@@ -74,7 +93,7 @@ public class HGUCoursePatternAnalyzer {
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
-		// TODO: Implement this method
+		// TODO: Implement this method		
 		
 		return null; // do not forget to return a proper variable.
 	}
