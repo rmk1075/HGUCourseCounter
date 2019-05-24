@@ -31,6 +31,7 @@ public class Utils {
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("The file path does not exits. Please check your CLI argument!");
+			System.exit(0);
 		}
 		
 		if(removeHeader == true) {
@@ -41,13 +42,12 @@ public class Utils {
 	}
 
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
-		ArrayList<String> csv = new ArrayList<String>();
+		
+		File result = new File(targetFileName);
+		if(!result.exists()) result.getParentFile().mkdirs();
 		
 		try 
 		{
-			File file = new File(targetFileName);
-			if(!file.exists()) file.mkdirs();
-			
 			BufferedWriter outputStream = new BufferedWriter(new FileWriter(targetFileName)); 
 			
 			for(String line : lines) {
