@@ -30,7 +30,7 @@ public class Utils {
 			inputStream.close( );
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("The file " + file);
+			System.out.println("The file path does not exits. Please check your CLI argument!");
 		}
 		
 		if(removeHeader == true) {
