@@ -26,6 +26,7 @@ public class Course {
 	}
 	
 	//getter for year and semester
+	
 	public String TakenSemester() {
 		String takenSemester = yearTaken + "-" + semesterCourseTaken;
 		

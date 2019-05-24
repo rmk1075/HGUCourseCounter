@@ -1,11 +1,10 @@
 package edu.handong.analysis.utils;
 
-import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -31,7 +30,7 @@ public class Utils {
 			inputStream.close( );
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("Cannot find file " + file);
+			System.out.println("The file " + file);
 		}
 		
 		if(removeHeader == true) {
@@ -46,13 +45,17 @@ public class Utils {
 		
 		try 
 		{
-			ObjectOutputStream outputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetFileName))); 
+			File file = new File(targetFileName);
+			if(!file.exists()) file.mkdirs();
+			
+			BufferedWriter outputStream = new BufferedWriter(new FileWriter(targetFileName)); 
 			
 			for(String line : lines) {
-				outputStream.writeObject(line);
-				outputStream.writeBytes("\n");
+				outputStream.write(line + "\n");
 			}
-			outputStream.close( );
+			
+			outputStream.flush();
+			outputStream.close();
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("Cannot find file " + targetFileName);

@@ -2,6 +2,9 @@ package edu.handong.analysis.datamodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class Student {
 	private String studentId = null;
@@ -34,11 +37,19 @@ public class Student {
 	public int getNumCourseInNthSementer(int semester) {
 		
 		HashMap <String, Integer> yearAndSemester = this.getSemestersByYearAndSemester();
+
+		int count = 0;
 		
+		for(Course semesters : coursesTaken) {
+			if(yearAndSemester.get(semesters.TakenSemester()) == semester) {
+				count++;
+			}
+		}
 		
-		return coursesTaken.indexOf(semester);
+		return count;
 	}
-
-
-
+	
+	public ArrayList<Course> takenCourses() {
+		return this.coursesTaken;
+	}
 }
