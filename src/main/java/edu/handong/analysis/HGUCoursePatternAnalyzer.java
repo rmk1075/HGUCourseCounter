@@ -63,11 +63,8 @@ public class HGUCoursePatternAnalyzer {
 			Course newCourse = new Course(line);
 						
 			if(Students.containsKey(ID)) {
-				Student newStudent = Students.get(ID);
-				newStudent.addCourse(newCourse);
-				
-				Students.replace(ID, newStudent);
-			} else {
+				Students.get(ID).addCourse(newCourse);
+			} else {				
 				Student newStudent = new Student(ID);
 				newStudent.addCourse(newCourse);
 				

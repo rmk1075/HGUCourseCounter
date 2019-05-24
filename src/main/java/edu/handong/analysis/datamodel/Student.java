@@ -40,7 +40,7 @@ public class Student {
 
 		int count = 0;
 		
-		for(Course semesters : coursesTaken) {
+		for(Course semesters : this.coursesTaken) {
 			if(yearAndSemester.get(semesters.TakenSemester()) == semester) {
 				count++;
 			}

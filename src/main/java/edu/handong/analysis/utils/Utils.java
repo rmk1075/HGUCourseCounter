@@ -57,9 +57,6 @@ public class Utils {
 			outputStream.flush();
 			outputStream.close();
 		}
-		catch(FileNotFoundException e) {
-			System.out.println("Cannot find file " + targetFileName);
-		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

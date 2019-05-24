@@ -10,9 +10,7 @@ public class Course {
 	private String courseCredit;
 	private int yearTaken;
 	private int semesterCourseTaken;
-	
-	//getter and setter?
-	
+		
 	public Course(String line) {
 		this.studentId = line.split(",")[0].trim();
 		this.yearMonthGraduated = line.split(",")[1].trim();
@@ -24,9 +22,10 @@ public class Course {
 		this.yearTaken = Integer.parseInt(line.split(",")[7].trim());
 		this.semesterCourseTaken = Integer.parseInt(line.split(",")[8].trim());
 	}
-	
-	//getter for year and semester
-	
+
+	/**getter
+	 * @return takenSemester => ex) 2012-1 
+	 */
 	public String TakenSemester() {
 		String takenSemester = yearTaken + "-" + semesterCourseTaken;
 		
