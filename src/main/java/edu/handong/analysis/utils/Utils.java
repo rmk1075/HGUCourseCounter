@@ -43,7 +43,7 @@ public class Utils {
 	public static void writeAFile(ArrayList<String> lines, String targetFileName) {
 		
 		File result = new File(targetFileName);
-		if(!result.exists()) result.getParentFile().mkdirs();
+		if(!result.exists() && result.getParentFile() != null) result.getParentFile().mkdirs();
 		
 		try 
 		{
