@@ -18,6 +18,9 @@ public class Utils {
 			// Skip the header line by reading and ignoring it
 			Scanner inputStream = new Scanner(new File(file)); 
 			String line;
+			if(removeHeader == true) {
+				line = inputStream.nextLine();
+			}
 			
 			// Read the rest of the file line by line
 			while (inputStream.hasNextLine())
@@ -32,10 +35,6 @@ public class Utils {
 		catch(FileNotFoundException e) {
 			System.out.println("The file path does not exits. Please check your CLI argument!");
 			System.exit(0);
-		}
-		
-		if(removeHeader == true) {
-			csv.remove(0);
 		}
 		
 		return csv;

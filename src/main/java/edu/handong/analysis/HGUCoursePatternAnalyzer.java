@@ -93,18 +93,18 @@ public class HGUCoursePatternAnalyzer {
 		// TODO: Implement this method
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("StudentID,TotalNumberOfSemester,Semester,NumCoursesTakenInTheSemester");
-
+		
+		//each student
 		for(String key : sortedStudents.keySet()) {
 			Student stu = sortedStudents.get(key);
-			
 			Map<String, Integer> sortedSemesters = new TreeMap<String,Integer>(stu.getSemestersByYearAndSemester());
+			int TotalNumberOfSemester = sortedSemesters.keySet().size();
 			
+			//each course of the student
 			for(String semester : sortedSemesters.keySet()) {
-				int TotalNumberOfSemester = sortedSemesters.keySet().size();
-				
 				String line = key + "," + TotalNumberOfSemester + "," + sortedSemesters.get(semester) + "," + stu.getNumCourseInNthSementer(sortedSemesters.get(semester));
 				result.add(line);
-			}			
+			}
 		}
 		
 		return result; // do not forget to return a proper variable.

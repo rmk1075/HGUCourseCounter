@@ -49,6 +49,10 @@ public class Student {
 		return count;
 	}
 	
+	/**
+	 * getter
+	 * @return coursesTaken
+	 */
 	public ArrayList<Course> takenCourses() {
 		return this.coursesTaken;
 	}
