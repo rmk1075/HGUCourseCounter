@@ -33,21 +33,19 @@ public class CLIRunnable {
 			System.out.println("You provided \"" + endyear + "\" as the value of the option e");
 			
 			String argument[] = new String[4];
+			
+			if(analysis.contentEquals("2")) {
+				argument = new String[5];
+				argument[4] = coursecode;
+			}
+			
 			argument[0] = input;
 			argument[1] = output;
-			
-			//TODO: are the year arguments adopted to both of '-a 1' and '-a 2'
 			argument[2] = startyear;
 			argument[3] = endyear;
 						
-			//TODO: when analysis is not 1 or 2
-			if(analysis.equals("1")) {
-				HGUCoursePatternAnalyzer analyzer = new HGUCoursePatternAnalyzer();
-				analyzer.run(argument);
-			} else if(analysis.equals("2")) {
-				System.out.println("option 2: course code is " + coursecode);
-				return;
-			}
+			HGUCoursePatternAnalyzer analyzer = new HGUCoursePatternAnalyzer();
+			analyzer.run(argument);
 		}
 	}
 

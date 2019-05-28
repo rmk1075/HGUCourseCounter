@@ -38,4 +38,11 @@ public class Course {
 	public int yearTaken() {
 		return this.yearTaken;
 	}
+	
+	/**getter
+	 * @return courseCode
+	 */
+	public String courseCode() {
+		return this.courseCode;
+	}
 }
