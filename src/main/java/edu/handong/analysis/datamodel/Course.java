@@ -31,4 +31,11 @@ public class Course {
 		
 		return takenSemester;
 	}
+
+	/**getter
+	 * @return yearTaken
+	 */
+	public int yearTaken() {
+		return this.yearTaken;
+	}
 }
