@@ -35,12 +35,18 @@ public class HGUCoursePatternAnalyzer {
 		ArrayList<String> lines = Utils.getLines(dataPath, true);
 		
 		students = loadStudentCourseRecords(lines, args);
-				
+		
 		// To sort HashMap entries by key values so that we can save the results by student ids in ascending order.
 		Map<String, Student> sortedStudents = new TreeMap<String,Student>(students); 
 				
 		// Generate result lines to be saved.
-		ArrayList<String> linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+		ArrayList<String> linesToBeSaved;
+		
+		if(args.length == 5) {
+			linesToBeSaved = rateOfCoursesTakenEachSemester(sortedStudents, args[4]);
+		} else {
+			linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+		}
 		
 		// Write a file (named like the value of resultPath) with linesTobeSaved.
 		Utils.writeAFile(linesToBeSaved, resultPath);
@@ -56,9 +62,6 @@ public class HGUCoursePatternAnalyzer {
 				
 		String startyear = args[2];
 		String endyear = args[3];
-		String coursecode = null;
-		
-		if(args.length == 5) coursecode = args[4];
 		
 		// TODO: Implement this method
 		HashMap<String, Student> Students = new HashMap<String, Student>();
@@ -67,10 +70,7 @@ public class HGUCoursePatternAnalyzer {
 			String ID = line.split(",")[0].trim();
 			
 			Course newCourse = new Course(line);
-			
-			//check course code
-			if(coursecode != null && !newCourse.courseCode().equals(coursecode)) continue;
-			
+						
 			//check specified year period
 			if(newCourse.yearTaken() < Integer.parseInt(startyear)) continue;
 			if(newCourse.yearTaken() > Integer.parseInt(endyear)) continue;
@@ -122,5 +122,52 @@ public class HGUCoursePatternAnalyzer {
 		}
 		
 		return result; // do not forget to return a proper variable.
+	}
+
+	private ArrayList<String> rateOfCoursesTakenEachSemester(Map<String, Student> sortedStudents, String courseCode) {
+		ArrayList<String> result = new ArrayList<String>();
+		result.add("Year,Semester,CourseCode, CourseName,TotalStudents,StudentsTaken,Rate");
+		
+		Map<String, Integer> semesterEnrolledStudents = new HashMap<String, Integer>();
+		Map<String, Integer> semesterTakenStudents = new HashMap<String, Integer>();
+		String courseName = null;
+		
+		for(String key : sortedStudents.keySet()) {
+			Student student = sortedStudents.get(key);
+			
+			HashMap<String, Integer> enrolledSemesters = student.getSemestersByYearAndSemester();
+			
+			for(String enrolledSemester : enrolledSemesters.keySet()) {
+				if(semesterEnrolledStudents.containsKey(enrolledSemester)) {
+					int count = semesterEnrolledStudents.get(enrolledSemester);
+					semesterEnrolledStudents.replace(enrolledSemester, count+1);
+				} else {
+					semesterEnrolledStudents.put(enrolledSemester, 1);
+				}	
+			}
+			
+			for(Course course : student.takenCourses()) {				
+				if(courseCode.equals(course.courseCode())) {
+					courseName = course.courseName();
+					if(semesterTakenStudents.containsKey(course.TakenSemester())) {
+						int count = semesterTakenStudents.get(course.TakenSemester());
+						semesterTakenStudents.replace(course.TakenSemester(), count+1);
+					} else {
+						semesterTakenStudents.put(course.TakenSemester(), 1);
+					}
+				}
+			}			
+		}
+		
+		Map<String, Integer> sortedSemesters = new TreeMap<String,Integer>(semesterTakenStudents);
+		
+		for(String semesterYear : sortedSemesters.keySet()) {
+			String year = semesterYear.split("-")[0].trim();
+			String semester = semesterYear.split("-")[1].trim();
+			
+			result.add(year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + semesterTakenStudents.get(semesterYear) + "," + String.format("%.1f", (float)semesterTakenStudents.get(semesterYear)/semesterEnrolledStudents.get(semesterYear)*100) + "%");
+		}
+		
+		return result;
 	}
 }

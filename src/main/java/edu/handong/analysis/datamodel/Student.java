@@ -10,7 +10,7 @@ public class Student {
 	private String studentId = null;
 	private ArrayList<Course> coursesTaken = new ArrayList<Course>();
 	private HashMap<String,Integer> semestersByYearAndSemester = new HashMap<String,Integer>(); 
-		
+	
 	public Student(String studentId) {
 		this.studentId = studentId;		
 	}
@@ -20,18 +20,16 @@ public class Student {
 	}
 	
 	public HashMap<String,Integer> getSemestersByYearAndSemester() {
-		
-		HashMap<String, Integer> semesterOfStudent = new HashMap<String, Integer>();
-		
+				
 		int value = 1;
 		
 		for(Course course : coursesTaken) {
-			if(!semesterOfStudent.containsKey(course.TakenSemester())){
-				semesterOfStudent.put(course.TakenSemester(), value++);
+			if(!this.semestersByYearAndSemester.containsKey(course.TakenSemester())){
+				this.semestersByYearAndSemester.put(course.TakenSemester(), value++);
 			}
 		}
 		
-		return semesterOfStudent;
+		return this.semestersByYearAndSemester;
 	}
 	
 	public int getNumCourseInNthSementer(int semester) {

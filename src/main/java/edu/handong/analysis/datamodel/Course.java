@@ -45,4 +45,11 @@ public class Course {
 	public String courseCode() {
 		return this.courseCode;
 	}
+	
+	/**getter
+	 * @return courseName
+	 */
+	public String courseName() {
+		return this.courseName;
+	}
 }

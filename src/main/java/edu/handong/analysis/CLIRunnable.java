@@ -121,29 +121,6 @@ public class CLIRunnable {
 		options.addOption(Option.builder("h").longOpt("help")
 		        .desc("Help")
 		        .build());
-		
-		/*
-		// add options by using OptionBuilder
-		options.addOption(Option.builder("p").longOpt("path")
-				.desc("Set a path of a directory or a file to display")
-				.hasArg()
-				.argName("Path name to display")
-				.required()
-				.build());
-
-		// add options by using OptionBuilder
-		options.addOption(Option.builder("v").longOpt("verbose")
-				.desc("Display detailed messages!")
-				//.hasArg()     // this option is intended not to have an option value but just an option
-				.argName("verbose option")
-				//.required() // this is an optional option. So disabled required().
-				.build());
-		
-		// add options by using OptionBuilder
-		options.addOption(Option.builder("h").longOpt("help")
-		        .desc("Help")
-		        .build());
-		*/
 
 		return options;
 	}
