@@ -42,7 +42,7 @@ public class HGUCoursePatternAnalyzer {
 		// Generate result lines to be saved.
 		ArrayList<String> linesToBeSaved;
 		
-		if(args.length == 5) {
+		if(args[4] != null) {
 			linesToBeSaved = rateOfCoursesTakenEachSemester(sortedStudents, args[4]);
 		} else {
 			linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
