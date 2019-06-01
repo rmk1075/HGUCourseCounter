@@ -20,8 +20,10 @@ public class CLIRunnable {
 	public void run(String[] args) {
 		Options options = createOptions();
 		
-		if(parseOptions(options, args)){			
-			if (help || (!analysis.equals("1") && !analysis.equals("2"))){
+		if(parseOptions(options, args)){	
+			
+			//1)help, 2)analysis option is not 1 or 2, 3)the coursecode is not putted when analysis option is 2
+			if (help || (!analysis.equals("1") && !analysis.equals("2") || (analysis.equals("2") && coursecode == null))){
 				printHelp(options);
 				return;
 			}
@@ -32,18 +34,24 @@ public class CLIRunnable {
 			System.out.println("You provided \"" + startyear + "\" as the value of the option s");
 			System.out.println("You provided \"" + endyear + "\" as the value of the option e");
 			
-			String argument[] = new String[4];
+			//i, o, s, e, (c)
+			String argument[] = new String[5];
 			
+			//when analysis option is 2
 			if(analysis.contentEquals("2")) {
 				argument = new String[5];
-				argument[4] = coursecode;
+				argument[4] = this.coursecode;
+				System.out.println("You provided \"" + coursecode + "\" as the value of the option c");
+			} else {
+				argument[4] = null;
 			}
 			
-			argument[0] = input;
-			argument[1] = output;
-			argument[2] = startyear;
-			argument[3] = endyear;
-						
+			argument[0] = this.input;
+			argument[1] = this.output;
+			argument[2] = this.startyear;
+			argument[3] = this.endyear;
+			
+			//run main algorithm
 			HGUCoursePatternAnalyzer analyzer = new HGUCoursePatternAnalyzer();
 			analyzer.run(argument);
 		}
@@ -97,7 +105,6 @@ public class CLIRunnable {
 				.required()
 				.build());
 				
-		//c required: not sure
 		options.addOption(Option.builder("c").longOpt("coursecode")
 				.desc("Course code for '-a 2' option")
 				.hasArg()
@@ -119,7 +126,8 @@ public class CLIRunnable {
 				.build());
 		
 		options.addOption(Option.builder("h").longOpt("help")
-		        .desc("Help")
+				.argName("Help")
+		        .desc("Show a Help page")
 		        .build());
 
 		return options;

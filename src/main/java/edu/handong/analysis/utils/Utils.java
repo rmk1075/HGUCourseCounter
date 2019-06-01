@@ -33,42 +33,17 @@ public class Utils {
 			    csv.add(line);
 			}			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("The file path does not exits. Please check your CLI argument!");
+			System.exit(0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		//remove header line
 		if(removeHeader == true) {
 			csv.remove(0);
 		}
-		
-		/*
-		try
-		{
-			// Skip the header line by reading and ignoring it
-			Scanner inputStream = new Scanner(new File(file)); 
-			String line;
-			if(removeHeader == true) {
-				line = inputStream.nextLine();
-			}
-			
-			// Read the rest of the file line by line
-			while (inputStream.hasNextLine())
-			{
-				// Contains ID, YearMonth, Major1, Major2, CourseCode, CourseName, CourseCredit, YearTaken, SemesterTaken
-				line = inputStream.nextLine();
-
-				csv.add(line);
-			}
-			inputStream.close( );
-		}
-		catch(FileNotFoundException e) {
-			System.out.println("The file path does not exits. Please check your CLI argument!");
-			System.exit(0);
-		}
-		*/
 		
 		return csv;
 	}

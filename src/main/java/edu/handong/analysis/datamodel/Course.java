@@ -20,7 +20,7 @@ public class Course {
 		this.courseName = line.split(",")[5].trim();
 		this.courseCredit = line.split(",")[6].trim();
 		this.yearTaken = Integer.parseInt(line.split(",")[7].trim());
-		this.semesterCourseTaken = Integer.parseInt(line.split(",")[8].trim());
+		this.semesterCourseTaken = Integer.parseInt(line.split(",")[8].trim());	
 	}
 
 	/**getter

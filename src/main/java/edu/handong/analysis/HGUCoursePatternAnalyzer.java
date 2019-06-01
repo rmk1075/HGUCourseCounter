@@ -17,7 +17,7 @@ public class HGUCoursePatternAnalyzer {
 	/**
 	 * This method runs our analysis logic to save the number courses taken by each student per semester in a result file.
 	 * Run method must not be changed!!
-	 * @param args
+	 * @param args [input path, output path, start year, end year, (course code) or null]
 	 */
 	public void run(String[] args) {
 		
@@ -42,10 +42,13 @@ public class HGUCoursePatternAnalyzer {
 		// Generate result lines to be saved.
 		ArrayList<String> linesToBeSaved;
 		
-		if(args[4] != null) {
-			linesToBeSaved = rateOfCoursesTakenEachSemester(sortedStudents, args[4]);
-		} else {
+		//classify by the argument value - If arg[4] is not null, then analysis option is 2.
+		if(args[4] == null) {
+			//analysis option 1
 			linesToBeSaved = countNumberOfCoursesTakenInEachSemester(sortedStudents);
+		} else {
+			//analysis option 2
+			linesToBeSaved = rateOfCoursesTakenEachSemester(sortedStudents, args[4]);
 		}
 		
 		// Write a file (named like the value of resultPath) with linesTobeSaved.
@@ -56,7 +59,7 @@ public class HGUCoursePatternAnalyzer {
 	 * This method create HashMap<String,Student> from the data csv file. Key is a student id and the corresponding object is an instance of Student.
 	 * The Student instance have all the Course instances taken by the student.
 	 * @param lines
-	 * @return
+	 * @return Students
 	 */
 	private HashMap<String,Student> loadStudentCourseRecords(ArrayList<String> lines, String[] args) {
 				
@@ -68,16 +71,18 @@ public class HGUCoursePatternAnalyzer {
 		
 		for(String line : lines) {
 			String ID = line.split(",")[0].trim();
-			
+						
 			Course newCourse = new Course(line);
 						
-			//check specified year period
+			//earlier than start year, later than end year
 			if(newCourse.yearTaken() < Integer.parseInt(startyear)) continue;
 			if(newCourse.yearTaken() > Integer.parseInt(endyear)) continue;
-			
 						
 			if(Students.containsKey(ID)) {
-				Students.get(ID).addCourse(newCourse);
+				Student newStudent = Students.get(ID);
+				newStudent.addCourse(newCourse);
+				
+				Students.replace(ID, newStudent);
 			} else {				
 				Student newStudent = new Student(ID);
 				newStudent.addCourse(newCourse);
@@ -86,7 +91,7 @@ public class HGUCoursePatternAnalyzer {
 			}
 		}
 		
-		return Students; // do not forget to return a proper variable.
+		return Students;
 	}
 
 	/**
@@ -100,7 +105,7 @@ public class HGUCoursePatternAnalyzer {
 	 * 
 	 * 
 	 * @param sortedStudents
-	 * @return
+	 * @return result
 	 */
 	private ArrayList<String> countNumberOfCoursesTakenInEachSemester(Map<String, Student> sortedStudents) {
 		
@@ -124,19 +129,38 @@ public class HGUCoursePatternAnalyzer {
 		return result; // do not forget to return a proper variable.
 	}
 
+	/**
+	 * This method generate the rate of course taken each semester. The result file look like this: 
+	 * Year, Semester, CourseCode, CourseName, TotalStudents, StudentsTaken, Rate
+	 * 2008,1,ITP20006,Java Programming,30,10,33.3%
+	 * ....
+	 * 
+	 * 2019,1,ITP20006,Java Programming,50,25,50.0% => This means ITP20006 Java Programming was opened at the 2019-1 semester. 50 students enrolled at the 2019-1 semester. 25 students took the course at the 2019-1 semester. The rate course taken is 25/50 = 50.0%.
+	 * 
+	 * @param sortedStudents
+	 * @param courseCode
+	 * @return result
+	 */
 	private ArrayList<String> rateOfCoursesTakenEachSemester(Map<String, Student> sortedStudents, String courseCode) {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("Year,Semester,CourseCode, CourseName,TotalStudents,StudentsTaken,Rate");
 		
+		//number of enrolled students at each semester
 		Map<String, Integer> semesterEnrolledStudents = new HashMap<String, Integer>();
+		
+		//number of course taken students at each semester
 		Map<String, Integer> semesterTakenStudents = new HashMap<String, Integer>();
+		
 		String courseName = null;
 		
+		//each student
 		for(String key : sortedStudents.keySet()) {
 			Student student = sortedStudents.get(key);
 			
+			//<semester, number> of the student
 			HashMap<String, Integer> enrolledSemesters = student.getSemestersByYearAndSemester();
 			
+			//each semester of each student
 			for(String enrolledSemester : enrolledSemesters.keySet()) {
 				if(semesterEnrolledStudents.containsKey(enrolledSemester)) {
 					int count = semesterEnrolledStudents.get(enrolledSemester);
@@ -146,6 +170,8 @@ public class HGUCoursePatternAnalyzer {
 				}	
 			}
 			
+			
+			//check the courses
 			for(Course course : student.takenCourses()) {				
 				if(courseCode.equals(course.courseCode())) {
 					courseName = course.courseName();
@@ -165,7 +191,10 @@ public class HGUCoursePatternAnalyzer {
 			String year = semesterYear.split("-")[0].trim();
 			String semester = semesterYear.split("-")[1].trim();
 			
-			result.add(year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + semesterTakenStudents.get(semesterYear) + "," + String.format("%.1f", (float)semesterTakenStudents.get(semesterYear)/semesterEnrolledStudents.get(semesterYear)*100) + "%");
+			String newLine = year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + semesterTakenStudents.get(semesterYear) + "," + String.format("%.1f", (float)semesterTakenStudents.get(semesterYear)/semesterEnrolledStudents.get(semesterYear)*100) + "%";
+			
+			result.add(newLine);
+			System.out.println(newLine);
 		}
 		
 		return result;
