@@ -194,7 +194,6 @@ public class HGUCoursePatternAnalyzer {
 			String newLine = year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + semesterTakenStudents.get(semesterYear) + "," + String.format("%.1f", (float)semesterTakenStudents.get(semesterYear)/semesterEnrolledStudents.get(semesterYear)*100) + "%";
 			
 			result.add(newLine);
-			System.out.println(newLine);
 		}
 		
 		return result;
