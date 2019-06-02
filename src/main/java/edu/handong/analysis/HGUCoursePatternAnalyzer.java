@@ -167,9 +167,8 @@ public class HGUCoursePatternAnalyzer {
 					semesterEnrolledStudents.replace(enrolledSemester, count+1);
 				} else {
 					semesterEnrolledStudents.put(enrolledSemester, 1);
-				}	
+				}
 			}
-			
 			
 			//check the courses
 			for(Course course : student.takenCourses()) {				
@@ -185,13 +184,19 @@ public class HGUCoursePatternAnalyzer {
 			}			
 		}
 		
-		Map<String, Integer> sortedSemesters = new TreeMap<String,Integer>(semesterTakenStudents);
+		Map<String, Integer> sortedSemesters = new TreeMap<String,Integer>(semesterEnrolledStudents);
 		
 		for(String semesterYear : sortedSemesters.keySet()) {
 			String year = semesterYear.split("-")[0].trim();
 			String semester = semesterYear.split("-")[1].trim();
 			
-			String newLine = year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + semesterTakenStudents.get(semesterYear) + "," + String.format("%.1f", (float)semesterTakenStudents.get(semesterYear)/semesterEnrolledStudents.get(semesterYear)*100) + "%";
+			int takenStudents = 0;
+			
+			if(semesterTakenStudents.containsKey(semesterYear)) {
+				takenStudents = semesterTakenStudents.get(semesterYear);
+			}
+			
+			String newLine = year + "," + semester + "," + courseCode + "," + courseName + "," + semesterEnrolledStudents.get(semesterYear) + "," + takenStudents + "," + String.format("%.1f", (float)takenStudents/semesterEnrolledStudents.get(semesterYear)*100) + "%";
 			
 			result.add(newLine);
 		}
