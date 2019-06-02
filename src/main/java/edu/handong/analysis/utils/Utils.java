@@ -59,7 +59,6 @@ public class Utils {
 			
 			for(String line : lines) {
 				outputStream.write(line + "\n");
-				System.out.println(line);
 				outputStream.flush();
 			}
 			
